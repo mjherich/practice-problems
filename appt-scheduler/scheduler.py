@@ -9,9 +9,9 @@ def find_appointment_times(person_1_cal, person_2_cal, availability_bounds):
     def ttd(time):
         hour, minute = time.split(":")
         if minute == "30":
-            return int(hour) + 0.5
+            return float(hour) + 0.5
         else:
-            return int(hour)
+            return float(hour)
     
 
     # Helper function to translate decimal times to string
@@ -23,15 +23,43 @@ def find_appointment_times(person_1_cal, person_2_cal, availability_bounds):
         else:
             return f"{hour}:00"
 
+
+    # Translate both calendars to decimal
+    cal_1_dec = [[ttd(appt[0]), ttd(appt[1])] for appt in person_1_cal]
+    cal_2_dec = [[ttd(appt[0]), ttd(appt[1])] for appt in person_2_cal]
+
+    # Find all possible 30 minute appointments
+    
+    # Then remove appoin
     
     # Helper to check if potential appointment would conflict with current appointments
     # Returns True if no conflicts
     def does_not_conflict(start_time, end_time):
-        pass
+        # Check first calendar
+        for appt in cal_1_dec:
+            appt_start, appt_end = appt
+            # Does the potential appointment start during another appt
+            if appt_start <= start_time and start_time < appt_end:
+                return False
+            # Does the potential appointment end during another appt
+            if appt_start < end_time and end_time < appt_end:
+                return False
+        # Check second calendar
+        for appt in cal_2_dec:
+            appt_start, appt_end = appt
+            # Does the potential appointment start during another appt
+            if appt_start <= start_time and start_time < appt_end:
+                return False
+            # Does the potential appointment ends during another appt
+            if appt_start < end_time and end_time < appt_end:
+                return False
+        # If we make it all the way through, no conflicts return True
+        print(f"No conflict with {[dtt(start_time), dtt(end_time)]}")
+        return True
 
     # Destructure availability_bounds
     earliest_availability, latest_availability = availability_bounds
-    latest_availability = ttd(earliest_availability)
+    latest_availability = ttd(latest_availability)
 
     # Initialize potential_start_time to be be first bound
     potential_start_time = ttd(earliest_availability)
@@ -40,6 +68,7 @@ def find_appointment_times(person_1_cal, person_2_cal, availability_bounds):
 
     # Loop with end condition when potential_start_time is after latest availability
     while potential_start_time <= latest_availability - 1:
+        print(f"Potential start time: {potential_start_time}")
         # Set potential_end_time to be an hour after potential_start_time
         potential_end_time = potential_start_time + 1
 
@@ -54,7 +83,7 @@ def find_appointment_times(person_1_cal, person_2_cal, availability_bounds):
 
 
 # Test it
-person_1_cal = [['8:00', '9:00'], ['10:00', '10:30'], ['4:00', '5:00']]
-person_2_cal = [['8:00', '9:00'], ['10:00', '11:30'], ['2:30', '3:00'], ['3:30', '4:00']]
+person_1_cal = [['8:00', '9:00'], ['10:00', '10:30'], ['16:00', '17:00']]
+person_2_cal = [['8:00', '9:00'], ['10:00', '11:30'], ['14:30', '15:00'], ['15:30', '16:00']]
 availability_bounds = ['7:00', '18:30']
-print(find_appointment_times(person_1_cal, person_2_cal, availability_bounds))
+print("\n", find_appointment_times(person_1_cal, person_2_cal, availability_bounds))
