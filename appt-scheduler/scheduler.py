@@ -42,7 +42,7 @@ def find_appointment_times(person_1_cal, person_2_cal, availability_bounds):
             if appt_start <= start_time and start_time < appt_end:
                 return False
             # Does the potential appointment end during another appt
-            if appt_start < end_time and end_time < appt_end:
+            if appt_start < end_time and end_time <= appt_end:
                 return False
         # Check second calendar
         for appt in cal_2_dec:
@@ -50,8 +50,8 @@ def find_appointment_times(person_1_cal, person_2_cal, availability_bounds):
             # Does the potential appointment start during another appt
             if appt_start <= start_time and start_time < appt_end:
                 return False
-            # Does the potential appointment ends during another appt
-            if appt_start < end_time and end_time < appt_end:
+            # Does the potential appointment end during another appt
+            if appt_start < end_time and end_time <= appt_end:
                 return False
         # If we make it all the way through, no conflicts return True
         print(f"No conflict with {[dtt(start_time), dtt(end_time)]}")
@@ -83,7 +83,7 @@ def find_appointment_times(person_1_cal, person_2_cal, availability_bounds):
 
 
 # Test it
-person_1_cal = [['8:00', '9:00'], ['10:00', '10:30'], ['16:00', '17:00']]
-person_2_cal = [['8:00', '9:00'], ['10:00', '11:30'], ['14:30', '15:00'], ['15:30', '16:00']]
+person_1_cal = [['7:30', '8:00'], ['8:00', '9:00'], ['10:00', '10:30'], ['16:00', '17:00']]
+person_2_cal = [['7:30', '9:00'], ['10:00', '11:30'], ['14:30', '15:00'], ['15:30', '16:00']]
 availability_bounds = ['7:00', '18:30']
 print("\n", find_appointment_times(person_1_cal, person_2_cal, availability_bounds))
