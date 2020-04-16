@@ -10,13 +10,11 @@ def subarraySort(array):
 
 	for i in range(len(array)):
 		cur = array[i]
-		if cur > biggest:
+		if cur >= biggest:
 			biggest = cur
-			# print(f"new biggest {cur}")
 		else:
 			l_idx = i
 			if cur <= s:
-				print(f"new smallest out of order {cur}")
 				s = cur
 				s_idx = i
 
@@ -27,13 +25,22 @@ def subarraySort(array):
 		print('Need to sort')
 		for i in range(len(array)):
 			cur = array[i]
-			if s <= cur:
-				print('Found smallest idx')
+			if s < cur:
 				out[0] = i
 				break
 	return out
 
 
 # Tests
-arr = [1, 2, 4, 7, 10, 11, 7, 12, 6, 7, 16, 18, 19]
-print(subarraySort(arr)) # Expect [3,9]
+arr1 = [1, 2, 4, 7, 10, 11, 7, 12, 6, 7, 16, 18, 19]
+print(subarraySort(arr1)) # Expect [3,9]
+
+arr2 = [1, 2, 4, 7, 10, 11, 7, 12, 7, 7, 16, 18, 19]
+print(subarraySort(arr2)) # Expect [4,9]
+
+
+arr3 = [1, 2, 4, 7, 10, 11, 7, 12, 13, 14, 16, 18, 19]
+print(subarraySort(arr3)) # Expect [4,6]
+
+arr4 = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
+print(subarraySort(arr4)) # Expect [-1,-1]
